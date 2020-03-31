@@ -12,7 +12,7 @@ O0=[0]
 M0=[0]
 S0 = [9000]
 # Contact rate, beta, and mean recovery rate, gamma, (in 1/days).
-ab,g,ga,d,db1,db2,e,ei1,ei2 =1,0.89,1,0.06,0.9,0.1,0.05,0.1,0.9
+ab,g,ga,d,db1,db2,e,ei1,ei2 =0.5,0.9,0.45,0.55,0.27,0.005,0.55,0.27,0.005
 z=100
 r=z
 # A grid of time points (in days)
@@ -21,12 +21,12 @@ x = np.linspace(0,2, num=2)
 # The SIR model differential equations.
 def deriv(y, x, N, ab,g,ga,d,db1,db2,e,ei1,ei2):
     A,B,I,O,M,S = y
-    dAdt = +(S*ab*g* (A)) -(A*ga)
-    dBdt = +(S*d*ab *(A))-(B*db1)-(B*db2)
-    dIdt = +(S*e*ab *(A))-(I*ei1)-(I*ei2)
-    dOdt =(A*ga)+(B*db1)+(I*ei1)
-    dMdt =(B*db2)+(I*ei2)
-    dSdt = -(ab* S * (A+B+I))/ N
+    dAdt = +(((S*ab* A)/N)*g) -(A*ga)#
+    dBdt = +(((S*ab *A)/N)*d)-(B*db1)-(B*db2)#
+    dIdt = +(((S*ab *A)/N)*e)-(I*ei1)-(I*ei2)#
+    dOdt =+(A*ga)+(B*db1)+(I*ei1)
+    dMdt =+(B*db2)+(I*ei2)
+    dSdt = -((S*ab*g* A)/N)-((S*d*ab *A)/N)-((S*e*ab *A)/N)
     return dAdt, dBdt, dIdt,dOdt, dMdt, dSdt
 while z>0:
 # Initial conditions vector
